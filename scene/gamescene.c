@@ -1,4 +1,4 @@
-#include "gamescene.h"
+#include"./gamescene.h"
 #include"../element/Ball.h"
 #include"../element/player.h"
 #include"../element/bullet.h"
