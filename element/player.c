@@ -42,9 +42,9 @@ Elements *New_Player(int label,int exp)
     // initial the animation component
     pObj->inter_obj[pObj->inter_len++] = Monster_L;
     pDerivedObj->wlk_state = p_STOP;
-    pDerivedObj->atk_state=CEASE_FIRE;
-    pDerivedObj->new_shot= 0;
-    pDerivedObj->exp=exp;
+    pDerivedObj->atk_state = p_CEASE_FIRE;
+    pDerivedObj->new_shot = 0;
+    pDerivedObj->exp = exp;
     pObj->pDerivedObj = pDerivedObj;
     // setting derived object function
     pObj->Draw = Player_draw;
@@ -60,77 +60,77 @@ void Player_update(Elements *const ele)
     chara->timer+=5;
     if (chara->wlk_state == p_STOP)
     {
-        if (key_state[ALLEGRO_KEY_SPACE])
-        {
-            chara->atk_state=FIRE;
-        }
+        
         if (key_state[ALLEGRO_KEY_A])
         {
             chara->dir = false;
             chara->wlk_state = p_MOVE;
         }
-        else if (key_state[ALLEGRO_KEY_D])
+        if (key_state[ALLEGRO_KEY_D])
         {
             chara->dir = true;
             chara->wlk_state = p_MOVE;
         }
-        else if (key_state[ALLEGRO_KEY_W]){
-            chara->wlk_state=p_MOVE;
-        }
-        else if(key_state[ALLEGRO_KEY_S]){
-            chara->wlk_state=p_MOVE;
-        }
-        else
+        if (key_state[ALLEGRO_KEY_W])
         {
-            chara->wlk_state = p_STOP;
+            chara->wlk_state=p_MOVE;
+        }
+        if(key_state[ALLEGRO_KEY_S])
+        {
+            chara->wlk_state=p_MOVE;
+        }
+        if (key_state[ALLEGRO_KEY_SPACE] || mouseHeld)
+        {
+            chara->atk_state = p_FIRE;
         }
     }
-    else if (chara->wlk_state == p_MOVE)
+    else if (chara->wlk_state == p_MOVE || chara->wlk_state == p_FIRE )
     {
-        if (key_state[ALLEGRO_KEY_SPACE])
-        {
-            chara->atk_state = ATK;
+        if (chara->atk_state == p_FIRE)
+        {    
+            if (chara->timer >= chara->rpm){
+                double mx=mouse.x,my=mouse.y;
+                double angle = atan2(my-chara->y,mx-chara->x);
+                Elements *bullet;
+                bullet=New_Bullet(Bullet_L,chara->x,chara->y,angle,2*chara->velocity,20);
+                _Player_update_position(ele, -chara->velocity * 2 * cos(angle) , -chara->velocity * 2 * sin(angle));
+                _Register_elements(scene,bullet);
+                chara->atk_state = p_CEASE_FIRE;
+                chara->timer%=chara->rpm;
+            }
+            else{
+                chara->atk_state = p_CEASE_FIRE; 
+            }
         }
+        
         if (key_state[ALLEGRO_KEY_A])
         {
             chara->dir = false;
             _Player_update_position(ele, -chara->velocity, 0);
             chara->wlk_state = p_MOVE;
         }
-        
-        else if (key_state[ALLEGRO_KEY_D])
+        if (key_state[ALLEGRO_KEY_D])
         {
             chara->dir = true;
             _Player_update_position(ele, chara->velocity, 0);
             chara->wlk_state = p_MOVE;
         }
-        else if (key_state[ALLEGRO_KEY_W]){
+        if (key_state[ALLEGRO_KEY_W]){
             chara->wlk_state=p_MOVE;
             _Player_update_position(ele, 0,-chara->velocity);
         }
-        else if(key_state[ALLEGRO_KEY_S]){
+        if(key_state[ALLEGRO_KEY_S]){
             chara->wlk_state=p_MOVE;
             _Player_update_position(ele, 0,chara->velocity);
         }
-        else{
-            chara->wlk_state=p_STOP;
+        if (key_state[ALLEGRO_KEY_SPACE] || mouseHeld)
+        {
+            chara->atk_state = p_FIRE;
         }
+
     }
-    if (chara->atk_state == FIRE)
-    {    
-        if(chara->timer>=chara->rpm){
-         double mx=mouse.x,my=mouse.y;
-         double angle=atan2(my-chara->y,mx-chara->x);
-         Elements *bullet;
-         bullet=New_Bullet(Bullet_L,chara->x,chara->y,angle,2*chara->velocity,20);
-         _Register_elements(scene,bullet);
-         chara->atk_state=CEASE_FIRE;
-         chara->timer%=chara->rpm;
-        }
-        else{
-           chara->atk_state = CEASE_FIRE; 
-        }
-    }
+    if(chara->wlk_state != p_MOVE && chara->wlk_state != p_FIRE)
+        chara->wlk_state = p_STOP;
     chara->angle=atan2(mouse.y- chara->y,mouse.x-chara->x);
 }
 void Player_draw(Elements *const ele)

@@ -15,8 +15,8 @@ typedef enum PlayerType
 {
 	p_STOP = 0,
 	p_MOVE,
-    CEASE_FIRE,
-	FIRE
+    p_CEASE_FIRE,
+	p_FIRE
 } PlayerType;
 
 

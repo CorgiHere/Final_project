@@ -9,7 +9,7 @@
 #include <allegro5/allegro_audio.h>
 #include <allegro5/allegro_acodec.h>
 #include <allegro5/allegro_font.h>
-#include <allegro5/allegro_ttf.h>
+#include <allegro5/allegro_ttf.h>f
 // include scene and following component
 #include "scene/sceneManager.h"
 
@@ -66,11 +66,13 @@ void execute(Game *game)
         }
         case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
         {
+            mouseHeld = true;
             mouse_state[event.mouse.button] = true;
             break;
         }
         case ALLEGRO_EVENT_MOUSE_BUTTON_UP:
         {
+            mouseHeld = false;
             mouse_state[event.mouse.button] = false;
             break;
         }
