@@ -3,6 +3,8 @@
 #include <allegro5/allegro_audio.h>
 #include <allegro5/allegro_acodec.h>
 #include <allegro5/allegro_image.h>
+#include <allegro5/allegro_font.h>
+#include <allegro5/allegro_ttf.h>
 #include "element.h"
 #include "../shapes/Shape.h"
 #include "../algif5/src/algif.h"
@@ -23,9 +25,11 @@ typedef enum PlayerType
 
 typedef struct _Player
 {
-    int x, y;     
+    double x, y;     
     int timer; 
     int rpm;   
+    int damage;
+    int bullet_speed;   
     int velocity; 
     int width, height; // the width and height of image
     bool dir;         // true: face to right, false: face to left
@@ -35,11 +39,13 @@ typedef struct _Player
     int heart;
     int exp;
     int new_shot;
-    ALLEGRO_BITMAP* img; // gif for each state. 0: stop, 1: move, 2:attack
-    ALLEGRO_SAMPLE_INSTANCE *atk_Sound;
     int anime;      // counting the time of animation
     int anime_time; // indicate how long the animation
+    char name[20];
     Shape *hitbox; // the hitbox of object
+    ALLEGRO_BITMAP* img; // gif for each state. 0: stop, 1: move, 2:attack
+    ALLEGRO_SAMPLE_INSTANCE *atk_Sound;
+    ALLEGRO_FONT* font;
 } Player;
 
 

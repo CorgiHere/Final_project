@@ -19,7 +19,6 @@ extern const int HEIGHT;
 extern int window;
 extern bool key_state[ALLEGRO_KEY_MAX];
 extern bool mouse_state[ALLEGRO_MOUSE_MAX_EXTRA_AXES];
-extern bool mouseHeld;
 extern Point mouse;
 extern ALLEGRO_EVENT_QUEUE *event_queue;
 extern ALLEGRO_EVENT event;

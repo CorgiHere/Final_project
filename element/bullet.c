@@ -6,7 +6,7 @@
 #include <allegro5/allegro_primitives.h>
 #include<math.h>
 #include"Monster.h"
-const int scaled=96;
+const int scaled = 40;
 Elements *New_Bullet(int label,int x,int y,double radius, int velocity,int damage){
     Bullet *pDerivedObj = (Bullet *)malloc(sizeof(Bullet));
     Elements *pObj = New_Elements(label);

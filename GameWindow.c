@@ -66,13 +66,11 @@ void execute(Game *game)
         }
         case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
         {
-            mouseHeld = true;
             mouse_state[event.mouse.button] = true;
             break;
         }
         case ALLEGRO_EVENT_MOUSE_BUTTON_UP:
         {
-            mouseHeld = false;
             mouse_state[event.mouse.button] = false;
             break;
         }
